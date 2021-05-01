@@ -1,7 +1,9 @@
-public class AntiTask {
+public class AntiTask extends Task{
     int date;
 
     public AntiTask(String name, String type, float startTime, float duration){
+        super(name, type, startTime, duration);
+
     }
 
     public void cancelRecurringOnce(int date, float startTime, float duration){
@@ -12,7 +14,5 @@ public class AntiTask {
 
     }
 
-    public void checkOverlaps(){
-        
-    }
+    public void checkOverlaps(){}
 }

@@ -7,7 +7,13 @@ public class Model {
     public void roundTime(){
     }
 
-    public void viewTask(){
+    public void viewTask(String name){
+        for (Task taskThing: listOfTasks){
+            if(taskThing.name.equals(name)){
+                //display task info\
+                System.out.println("found " + name);
+            }
+        } 
     }
 
     public void deleteTask(){
@@ -15,4 +21,5 @@ public class Model {
 
     public void editTask(){
     }
+
 }

@@ -1,10 +1,11 @@
 public class Task {
-    String name;
+    public String name;
     String type;
     float startTime;
     float duration;
 
     public Task(String name, String type, float startTime, float duration){
+
     }
 
     public void checkStartTime(){
@@ -19,7 +20,8 @@ public class Task {
     public void checkTaskType(){
     }
 
-    public void checkTaskName(){
+    public void checkTaskName(String name, Task[] listOfTasks){
+        
     }
 
     public void checkOverlaps(){
