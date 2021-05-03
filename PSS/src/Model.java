@@ -1,10 +1,13 @@
+import java.util.ArrayList;
+
 public class Model {
-    Task[] listOfTasks;
+    Task[] listOfTasks; //going to change array to arrayList make edits to the schedule easier
     
     public void createTask(String name, String type, float startTime, float duration){
     }
 
     public void roundTime(){
+
     }
 
     public void viewTask(String name){
@@ -16,7 +19,12 @@ public class Model {
         } 
     }
 
-    public void deleteTask(){
+    public void deleteTask(String name){
+        for (Task taskThing: listOfTasks){
+            if(taskThing.name.equals(name)){
+                
+            }
+        }
     }
 
     public void editTask(){
