@@ -4,8 +4,17 @@ public class Task {
     float startTime;
     float duration;
 
+
+    public Task(){
+
+    }
+    
+    
     public Task(String name, String type, float startTime, float duration){
-        roundTime(startTime);
+        this.name = name;
+        this.type = type;
+        this.startTime = roundTime(startTime);   
+        this.duration = roundTime(duration);
     }
 
     //true = valid
@@ -23,26 +32,32 @@ public class Task {
         return true;
     }
 
-    public void roundTime(float time){
-        temp = time - (int)time;
+    public float roundTime(float time){
+        float temp = time - (int)time;
         if (temp < .125){
             //round to zero
+            return time - temp + 0f;
         }
         else if (temp < .375){
             //round to .25
+            return time - temp + .25f;
         }
         else if (temp < .625){
             //round to .5
+            return time - temp + .5f;
         }
         else if (temp < .875){
             //round to .75
+            return time - temp + .75f;
         }
         else{
             //round to 1
+            return time - temp + 1f;
         }
     }
 
     public void checkTaskType(){
+
     }
 
     //true = valid
