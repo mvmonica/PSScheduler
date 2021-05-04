@@ -1,10 +1,8 @@
 public class Controller {
     public static void main(String[] args) throws Exception{
-        Task testTask = new Task("Class", "Recurring", 12.26f, 4.5f);
-        System.out.println(testTask.name);
-        System.out.println(testTask.type);
-        System.out.println(testTask.startTime);
-        System.out.println(testTask.duration);
+        Model testModel = new Model();
+        testModel.createTask("CS 3560", "Class", 12.26f, 4.5f);
+        testModel.viewTask("CS 3560");
     }
 
     public void writeSchedule(String fileName){
