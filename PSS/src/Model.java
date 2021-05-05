@@ -1,11 +1,30 @@
-import java.util.ArrayList;
+import java.util.*;
+import java.io.*;
+import org.json.simple.*;
+
 
 public class Model {
     ArrayList<Object> testList = new ArrayList<Object>();
     
-    public void createTask(String name, String type, float startTime, float duration){
-        testList.add(new Task(name, type, startTime, duration));
-      
+    public void createTask(String name, String type, float startTime, float duration) throws FileNotFoundException {
+//        testList.add(new Task(name, type, startTime, duration));
+
+        JSONObject jo = new JSONObject();
+
+        // putting data to JSONObject
+        jo.put("Name of task", name);
+        jo.put("Type of task", type);
+        jo.put("Start time", startTime);
+        jo.put("Duration", duration);
+
+        //Making a new file with the given name. ".json" will ensure that it is json file.
+        //This file will be in the main directory
+        PrintWriter pw = new PrintWriter(new File("./JSON_Files", name + ".json"));
+        pw.write(jo.toJSONString());
+
+        pw.flush();
+        pw.close();
+        System.out.println(jo.toString());
     }
 
     public void createTask(String name, String type, float startTime, float duration, int startDate, int endDate, int frequency){
