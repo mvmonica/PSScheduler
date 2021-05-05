@@ -3,12 +3,6 @@ public class Task {
     String type;
     float startTime;
     float duration;
-
-
-    public Task(){
-
-    }
-    
     
     public Task(String name, String type, float startTime, float duration){
         this.name = name;
