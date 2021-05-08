@@ -3,7 +3,11 @@ public class Controller {
         Model m = new Model();
 
         m.createTask("Sleep", "Transient" , 0200f, 0300f);
+        m.createTask("Sleep", "Transient" , 0200f, 0300f);
+        m.createTask("Sleep", "Transient" , 0200f, 0300f);
+        m.createTask("Sleep", "Transient" , 0200f, 0300f);
 
+        m.editTask("Sleep");
 
     }
 
