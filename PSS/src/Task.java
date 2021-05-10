@@ -1,8 +1,8 @@
 public class Task {
-    public String name;
-    String type;
-    float startTime;
-    float duration;
+    private String name;
+    private String type;
+    private float startTime;
+    private float duration;
     
     public Task(String name, String type, float startTime, float duration){
         this.name = name;
@@ -51,7 +51,8 @@ public class Task {
     }
 
     public void checkTaskType(){
-
+        //todo - Only 3 possible options: recurring, anti, transient
+        // check task type == one of the 3
     }
 
     //true = valid
@@ -65,5 +66,17 @@ public class Task {
     }
 
     public void checkOverlaps(){
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public float getStartTime() {
+        return startTime;
+    }
+
+    public float getDuration() {
+        return duration;
     }
 }
