@@ -1,9 +1,9 @@
 public class AntiTask extends Task{
-    int date;
+   private int date;
 
-    public AntiTask(String name, String type, float startTime, float duration){
+    public AntiTask(String name, String type, float startTime, float duration, int date){
         super(name, type, startTime, duration);
-
+        this.date = date;
     }
 
     public void cancelRecurringOnce(int date, float startTime, float duration){
@@ -11,8 +11,11 @@ public class AntiTask extends Task{
     }
 
     public void checkDate(int date){
-
+        //todo - Figure out if there is a recurring task on that day and time
     }
 
-    public void checkOverlaps(){}
+
+    public int getDate() {
+        return date;
+    }
 }
