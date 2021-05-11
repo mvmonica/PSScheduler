@@ -1,0 +1,9 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "PSS/json-simple-1.1.jar"
+    ],
+    "java.project.sourcePaths": [
+        "PSS/src"
+    ]
+}

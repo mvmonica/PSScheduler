@@ -55,12 +55,12 @@ public class Model {
     public void viewTask(String name){
         for (int i = 0; i < testList.size(); i++){
             Task temp = (Task)testList.get(i);
-            if (temp.name.equals(name)){
+            if (temp.getName().equals(name)){
                 //displays a task, but should be replaced later
-                System.out.println("Name: " + temp.name);
-                System.out.println("Type: " + temp.type);
-                System.out.println("Start Time: " + temp.startTime);
-                System.out.println("Duration: " + temp.duration);
+                System.out.println("Name: " + temp.getName());
+                System.out.println("Type: " + temp.getType());
+                System.out.println("Start Time: " + temp.getStartTime());
+                System.out.println("Duration: " + temp.getDuration());
                 break;
             }
         }
@@ -69,7 +69,7 @@ public class Model {
     public void deleteTask(String name){
         for (int i = 0; i < testList.size(); i++){
             Task temp = (Task)testList.get(i);
-            if (temp.name.equals(name)){
+            if (temp.getName().equals(name)){
                 testList.remove(i);
             }
         }
