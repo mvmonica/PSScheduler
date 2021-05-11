@@ -3,6 +3,10 @@ public class Task {
     private String type;
     private float startTime;
     private float duration;
+    //
+    private String[] RTaskList = {"Class", "Study", "Sleep", "Exercise", "Work", "Meal"};
+    private String[] TTaskList = {"Visit", "Shopping", "Appointment"};
+    private String[] ATaskList = {"Cancellation"};
     
     public Task(String name, String type, float startTime, float duration){
         this.name = name;
@@ -50,9 +54,26 @@ public class Task {
         }
     }
 
-    public void checkTaskType(){
-        //todo - Only 3 possible options: recurring, anti, transient
-        // check task type == one of the 3
+    //think this is how it is suppose to go, but I do not know
+    //used three for each loops for easy expandablity 
+    //since the anti task list only one for now
+    public String checkTaskType(String type){
+        for(String rTypeList: RTaskList){
+            if(type.equals(rTypeList)){
+                return "Recurring";
+            }
+        }
+        for(String tTypeList: TTaskList){
+            if(type.equals(tTypeList)){
+                return "Transient";
+            }
+        }
+        for(String aTypeList: ATaskList){
+            if(type.equals(aTypeList)){
+                return "Anti";
+            }
+        }
+        return "Invalid Task Type";
     }
     
     //true = valid name
@@ -66,6 +87,10 @@ public class Task {
     }
 
     public void checkOverlaps(){
+    }
+
+    public String getName() {
+        return name;
     }
 
     public String getType() {
