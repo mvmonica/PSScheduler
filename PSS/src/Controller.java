@@ -12,8 +12,6 @@ public class Controller {
         testModel.viewTask("CS 1400");
 
         userInterface(testModel);
-
-
     }
 
     public static void userInterface(Model testModel){
