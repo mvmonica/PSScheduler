@@ -3,7 +3,7 @@ public class Controller {
         Model testModel = new Model();
         testModel.createTask("CS 3560", "Class", 12.26f, 4.5f); //basic task test
 
-        testModel.createTask("CS 1400", "Class", 12.26f, 4.5f, 1234567, 1234567, 7); //recurring task test
+        //testModel.createTask("CS 1400", "Class", 12.26f, 4.5f, 1234567, 1234567, 7); //recurring task test
 
 
 
