@@ -1,7 +1,9 @@
+import java.util.ArrayList;
+
 public class RecurringTask extends Task{
-    int startDate;
-    int endDate;
-    int frequency;
+    private int startDate;
+    private int endDate;
+    private int frequency;
 
     public RecurringTask(String name, String type, float startTime, float duration, int startDate, int endDate, int frequency){
         super(name, type, startTime, duration);
@@ -10,9 +12,13 @@ public class RecurringTask extends Task{
         this.frequency = frequency;
     }
 
-    public void compareDates(int startDate, int endDate){
-    }
 
-    public void checkOverlaps(){
+    public void compareDates(int startDate, int endDate){
+        if (startDate <= endDate)
+            System.out.println("valid!");
+        else
+            System.out.println("invalid!");
+
+
     }
 }

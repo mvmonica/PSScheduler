@@ -4,7 +4,7 @@ import org.json.simple.*;
 
 
 public class Model {
-    ArrayList<Object> testList = new ArrayList<Object>();
+    ArrayList<Task> testList = new ArrayList<>();
     
     public void createTask(String name, String type, float startTime, float duration) throws FileNotFoundException {
 //        testList.add(new Task(name, type, startTime, duration));
@@ -27,21 +27,40 @@ public class Model {
         System.out.println(jo.toString());
     }
 
-    public void createTask(String name, String type, float startTime, float duration, int startDate, int endDate, int frequency){
-        testList.add(new RecurringTask(name, type, startTime, duration, startDate, endDate, frequency));
+    public void createAntiTask(String name, String type, float startTime, float duration, int date){
+        AntiTask task = new AntiTask(name, type, startTime, duration, date);
+
     }
 
-    
+    public boolean checkAntiTaskOverlaps(AntiTask checkingTask){
+        for (int i =0; i < testList.size(); i++) {
+            AntiTask inList = (AntiTask) testList.get(i);
+            if (inList.getDate() == checkingTask.getDate()){
+
+                float inListEndTime = inList.getStartTime() + inList.getDuration();
+                float inListStart = inList.getStartTime();
+
+                float taskStart = checkingTask.getStartTime();
+                float taskEndTime = checkingTask.getStartTime() + checkingTask.getDuration();
+
+
+                if (inListStart <= taskStart && taskStart < inListEndTime)
+                    return  false;
+            }
+        }
+        return true;
+    }
+
 
     public void viewTask(String name){
         for (int i = 0; i < testList.size(); i++){
             Task temp = (Task)testList.get(i);
-            if (temp.name.equals(name)){
+            if (temp.getName().equals(name)){
                 //displays a task, but should be replaced later
-                System.out.println("Name: " + temp.name);
-                System.out.println("Type: " + temp.type);
-                System.out.println("Start Time: " + temp.startTime);
-                System.out.println("Duration: " + temp.duration);
+                System.out.println("Name: " + temp.getName());
+                System.out.println("Type: " + temp.getType());
+                System.out.println("Start Time: " + temp.getStartTime());
+                System.out.println("Duration: " + temp.getDuration());
                 break;
             }
         }
@@ -50,7 +69,7 @@ public class Model {
     public void deleteTask(String name){
         for (int i = 0; i < testList.size(); i++){
             Task temp = (Task)testList.get(i);
-            if (temp.name.equals(name)){
+            if (temp.getName().equals(name)){
                 testList.remove(i);
             }
         }
