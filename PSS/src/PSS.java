@@ -1,4 +1,4 @@
-package pss;
+//package pss;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
@@ -148,7 +148,7 @@ public class PSS extends Application
         homePageNav.setPadding(new Insets(15));
         homePageNav.setAlignment(Pos.CENTER);
         
-        Image calendarImage1 = new Image("file:/Users/Preni/Documents/NetBeansProjects/PSS/src/pss/cal.jpg");
+        Image calendarImage1 = new Image("cal.jpg");
         ImageView calendarImgView1 = new ImageView(calendarImage1);
         calendarImgView1.setLayoutX(100.0);
         calendarImgView1.setLayoutY(100.0);
