@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Task {
     private String name;
     private String type;
@@ -75,9 +77,25 @@ public class Task {
         }
         return "Invalid Task Type";
     }
-    
+
+    public boolean checkCategory(){
+        for(String rTypeList: RTaskList){
+            if(type.equals(rTypeList))
+                return true;
+        }
+        for(String tTypeList: TTaskList){
+            if(type.equals(tTypeList))
+                return true;
+        }
+        for(String aTypeList: ATaskList){
+            if(type.equals(aTypeList))
+                return true;
+        }
+        return false;
+    }
+
     //true = valid name
-    public boolean checkTaskName(String name, Task[] listOfTasks){
+    public boolean checkTaskName(String name, ArrayList<Task> listOfTasks){
         for(Task taskList: listOfTasks){
             if(taskList.name.equals(name)){
                 return false;
