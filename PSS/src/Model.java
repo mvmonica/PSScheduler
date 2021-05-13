@@ -149,7 +149,7 @@ public class Model {
             if (Integer.valueOf(day) > maxDay) {
                 day = String.valueOf(i - maxDay);
                 day = day.length() < 2 ? "0" + day : day;
-                if (year.equals("12")) {
+                if (month.equals("12")) {
                     month = "01";
                     year = String.valueOf(Integer.valueOf(year) + 1);
                 } else {
@@ -181,7 +181,7 @@ public class Model {
                 if (Integer.valueOf(day) > maxDay) {
                     day = String.valueOf(i - maxDay);
                     day = day.length() < 2 ? "0" + day : day;
-                    if (year.equals("12")) {
+                    if (month.equals("12")) {
                         month = "01";
                         year = String.valueOf(Integer.valueOf(year) + 1);
                     } else {
@@ -412,6 +412,21 @@ public class Model {
             String month = String.valueOf(i).substring(4, 6);
             String day = String.valueOf(i).substring(6, 8);
             String year = String.valueOf(i).substring(0, 4);
+            int maxDay = calculateMaxDays(month, year);
+            if(Integer.valueOf(day) > maxDay) {
+                if (month.equals("12")) {
+                    month = "01";
+                    day = "01";
+                    year = String.valueOf(Integer.valueOf(year) + 1);
+                } else {
+                    month = String.valueOf(Integer.valueOf(month) + 1);
+                    if(month.length() < 2)
+                        month = "0" + month;
+                    day = "01";
+                }
+                String newiValue = year + month + day;
+                i = Integer.valueOf(newiValue);
+            }
             System.out.println("\n\nDate: " + month + "/" + day + "/" + year);
             for(int j =0; j < testList.size(); j++){
                 Task t= testList.get(j);
