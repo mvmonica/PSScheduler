@@ -122,7 +122,6 @@ public class Model {
             String newDate = year + month + day;
             Task task1 = new Task(name, type, startTime, duration);
             task1.setDate(Integer.valueOf(newDate));
-            System.out.println("date: " + newDate);
             if(checkOccurrenceOverlap(task1))
                 testList.add(task1);
             else
