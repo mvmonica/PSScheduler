@@ -85,7 +85,7 @@ public class Controller {
         System.out.println("\nWelcome to your PSS");
         do {
 
-            System.out.println("\n\n1: Add a task");
+            System.out.println("\n1: Add a task");
             System.out.println("2: Delete a task");
             System.out.println("3: Edit a task");
             System.out.println("4: View Schedule");

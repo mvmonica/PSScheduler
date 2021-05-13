@@ -32,8 +32,19 @@ public class Model {
 
     }
 
-    public void createTask(String name, String type, float startTime, float duration, int date){
-        TransientTask task = new TransientTask(name, type, startTime, duration, date);
+
+    /**
+     * Will create a transient task.
+     * Checks the category and ensures it is part of the transient list, and then will check for any overlaps
+     * such as duplicated task name or conflicting times
+     * @param name - Name of the task
+     * @param category - Category
+     * @param startTime - Start time
+     * @param duration - Duration of task
+     * @param date - When the task occurs
+     */
+    public void createTask(String name, String category, float startTime, float duration, int date){
+        TransientTask task = new TransientTask(name, category, startTime, duration, date);
         if((task.checkCategory()).equals("Transient")){
             if(testList.isEmpty()) {
                 testList.add(task);
@@ -52,27 +63,48 @@ public class Model {
         }
     }
 
-    public void createTask(String name, String type, float startTime, float duration, int startDate, int endDate, int freq){
-        Task task = new RecurringTask(name, type, startTime, duration, startDate, endDate, freq);
+    /**
+     * Will create a recurring task, will call respective function based on frequency
+     * @param name - Name of the task
+     * @param category - Category
+     * @param startTime - Start time
+     * @param duration - Duration
+     * @param startDate - Start date
+     * @param endDate - End date
+     * @param freq - Frequency of the task
+     */
+    public void createTask(String name, String category, float startTime, float duration, int startDate, int endDate, int freq){
+        Task task = new RecurringTask(name, category, startTime, duration, startDate, endDate, freq);
         if((task.checkCategory()).equals("Recurring") && (startDate < endDate)) {
             boolean valid = true;
             if (task.checkTaskName(name, testList)) {
                 if(freq == 1)
-                    addRecurringDaily(name, type, startTime, duration, startDate, endDate);
+                    addRecurringDaily(name, category, startTime, duration, startDate, endDate);
                 else if(freq == 7)
-                    addRecurringWeekly(name, type, startTime, duration, startDate, endDate);
+                    addRecurringWeekly(name, category, startTime, duration, startDate, endDate);
             }
         } else {
             System.out.println("Invalid Category or start and end date.\n");
         }
     }
 
+    /**
+     * Handles adding recurring daily tasks, this will calculate all the dates and ensures the
+     * bounds are handled.  It will check for time overlap, but will not check for name or category since it is
+     * prechecked in the createTask() method
+     * @param name
+     * @param type
+     * @param startTime
+     * @param duration
+     * @param startDate
+     * @param endDate
+     */
     public void addRecurringDaily(String name, String type, float startTime, float duration, int startDate, int endDate){
         for (int i = startDate; i <= endDate; i++) {
             String month = String.valueOf(i).substring(4, 6);
             String day = String.valueOf(i).substring(6, 8);
             String year = String.valueOf(i).substring(0, 4);
-            int maxDay = calculateMaxDays(month);
+            int maxDay = calculateMaxDays(month, year);
             if (Integer.valueOf(day) > maxDay) {
                 if (month.equals("12")) {
                     month = "01";
@@ -95,12 +127,23 @@ public class Model {
         }
     }
 
-    public void addRecurringWeekly(String name, String type, float startTime, float duration, int startDate, int endDate){
+    /**
+     * Handles adding recurring weekly tasks, this will calculate all the dates and ensures the
+     * bounds are handled.  It will check for time overlap, but will not check for name or category since it is
+     * prechecked in the createTask() method
+     * @param name
+     * @param category
+     * @param startTime
+     * @param duration
+     * @param startDate
+     * @param endDate
+     */
+    public void addRecurringWeekly(String name, String category, float startTime, float duration, int startDate, int endDate){
         for (int i = startDate; i < endDate; i += 7) {
             String month = String.valueOf(i).substring(4, 6);
             String day = String.valueOf(i).substring(6, 8);
             String year = String.valueOf(i).substring(0, 4);
-            int maxDay = calculateMaxDays(month);
+            int maxDay = calculateMaxDays(month, year);
             if (Integer.valueOf(day) > maxDay) {
                 day = String.valueOf(i - maxDay);
                 day = day.length() < 2 ? "0" + day : day;
@@ -114,7 +157,7 @@ public class Model {
                 day = String.valueOf(Integer.valueOf(day));
             }
             String newDate = year + month + day;
-            Task task1 = new Task(name, type, startTime, duration);
+            Task task1 = new Task(name, category, startTime, duration);
             task1.setDate(Integer.valueOf(newDate));
             if(checkOccurrenceOverlap(task1))
                 testList.add(task1);
@@ -123,12 +166,53 @@ public class Model {
         }
     }
 
+    public void addRecurringMonthly(String name, String category, float startTime, float duration, int startDate, int endDate){
+        for (int i = startDate; i < endDate; i += 30) {
+            String month = String.valueOf(i).substring(4, 6);
+            String day = String.valueOf(i).substring(6, 8);
+            String year = String.valueOf(i).substring(0, 4);
+            int maxDay = calculateMaxDays(month, year);
+            if (month.equals("01") && maxDay < 30) {
+                month = "02";
+                day = String.valueOf(maxDay);
+            } else {
+                if (Integer.valueOf(day) > maxDay) {
+                    day = String.valueOf(i - maxDay);
+                    day = day.length() < 2 ? "0" + day : day;
+                    if (year.equals("12")) {
+                        month = "01";
+                        year = String.valueOf(Integer.valueOf(year) + 1);
+                    } else {
+                        month = String.valueOf(Integer.valueOf(month) + 1);
+                    }
+                } else {
+                    day = String.valueOf(Integer.valueOf(day));
+                }
+                String newDate = year + month + day;
+                Task task1 = new Task(name, category, startTime, duration);
+                task1.setDate(Integer.valueOf(newDate));
+                if (checkOccurrenceOverlap(task1))
+                    testList.add(task1);
+                else
+                    System.out.println("Conflicting tasks, cannot add to schedule.");
+            }
+        }
+    }
 
-    public int calculateMaxDays(String month){
+
+    /**
+     * Calculates the last day of the given month
+     * @param month
+     * @return
+     */
+    public int calculateMaxDays(String month, String year){
+        int leapYear = Integer.valueOf(year);
         if(monthsWith30.contains(month))
             return 30;
         else if(monthsWith31.contains(month))
             return 31;
+        else if(((leapYear % 4 == 0) && (leapYear % 100 != 0)) || (leapYear % 400 == 0))
+            return 29;
         else
             return 28;
     }
@@ -293,6 +377,9 @@ public class Model {
 
         System.out.print("New duration: ");
         task.setDuration(scanner.nextFloat());
+
+        System.out.print("New date: ");
+        task.setDate(scanner.nextInt());
     }
 
     public void takeInfo() throws FileNotFoundException {
