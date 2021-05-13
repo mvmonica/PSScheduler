@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ee07008b-6fec-43cb-85bd-e3cfeaa2955b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/lib.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PSS/src/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/PSS/src/Controller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PSS/src/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/PSS/src/Model.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/PSS/src/PSS.java" beforeDir="false" afterPath="$PROJECT_DIR$/PSS/src/PSS.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/PSS.iml" beforeDir="false" afterPath="$PROJECT_DIR$/PSS.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/PSS/Controller.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/PSS/Controller.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,9 +23,13 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.Controller">
     <configuration name="Controller" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Controller" />
       <module name="PSS" />
@@ -33,9 +37,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="PSS" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="PSS" />
+      <module name="PSS" />
+      <option name="VM_PARAMETERS" value="--module-path ${PATH_TO_FX} --add-modules javafx.controls,javafx.fxml" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.Controller" />
+      <item itemvalue="Application.PSS" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Controller" />
+        <item itemvalue="Application.PSS" />
       </list>
     </recent_temporary>
   </component>
@@ -53,22 +70,31 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1358" height="394" key="GridCell.Tab.0.bottom" timestamp="1620927453682">
-      <screen x="0" y="25" width="1680" height="938" />
+    <state x="304" y="154" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1620929316249">
+      <screen x="0" y="25" width="1680" height="941" />
+    </state>
+    <state x="304" y="154" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.1680.938@0.25.1680.938" timestamp="1620927618454" />
+    <state x="304" y="154" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.25.1680.941@0.25.1680.941" timestamp="1620929316249" />
+    <state width="1358" height="273" key="GridCell.Tab.0.bottom" timestamp="1620937488632">
+      <screen x="0" y="25" width="1680" height="941" />
     </state>
     <state width="1358" height="394" key="GridCell.Tab.0.bottom/0.25.1680.938@0.25.1680.938" timestamp="1620927453682" />
-    <state width="1358" height="394" key="GridCell.Tab.0.center" timestamp="1620927453681">
-      <screen x="0" y="25" width="1680" height="938" />
+    <state width="1358" height="273" key="GridCell.Tab.0.bottom/0.25.1680.941@0.25.1680.941" timestamp="1620937488632" />
+    <state width="1358" height="273" key="GridCell.Tab.0.center" timestamp="1620937488631">
+      <screen x="0" y="25" width="1680" height="941" />
     </state>
     <state width="1358" height="394" key="GridCell.Tab.0.center/0.25.1680.938@0.25.1680.938" timestamp="1620927453681" />
-    <state width="1358" height="394" key="GridCell.Tab.0.left" timestamp="1620927453680">
-      <screen x="0" y="25" width="1680" height="938" />
+    <state width="1358" height="273" key="GridCell.Tab.0.center/0.25.1680.941@0.25.1680.941" timestamp="1620937488631" />
+    <state width="1358" height="273" key="GridCell.Tab.0.left" timestamp="1620937488631">
+      <screen x="0" y="25" width="1680" height="941" />
     </state>
     <state width="1358" height="394" key="GridCell.Tab.0.left/0.25.1680.938@0.25.1680.938" timestamp="1620927453680" />
-    <state width="1358" height="394" key="GridCell.Tab.0.right" timestamp="1620927453681">
-      <screen x="0" y="25" width="1680" height="938" />
+    <state width="1358" height="273" key="GridCell.Tab.0.left/0.25.1680.941@0.25.1680.941" timestamp="1620937488631" />
+    <state width="1358" height="273" key="GridCell.Tab.0.right" timestamp="1620937488632">
+      <screen x="0" y="25" width="1680" height="941" />
     </state>
     <state width="1358" height="394" key="GridCell.Tab.0.right/0.25.1680.938@0.25.1680.938" timestamp="1620927453681" />
+    <state width="1358" height="273" key="GridCell.Tab.0.right/0.25.1680.941@0.25.1680.941" timestamp="1620937488632" />
     <state width="1358" height="294" key="GridCell.Tab.1.bottom" timestamp="1620904792491">
       <screen x="0" y="25" width="1680" height="938" />
     </state>
@@ -89,6 +115,12 @@
       <screen x="0" y="30" width="2194" height="1204" />
     </state>
     <state x="912" y="354" key="RollbackChangesDialog/0.30.2194.1204@0.30.2194.1204" timestamp="1620785922830" />
+    <state x="328" y="74" key="SettingsEditor" timestamp="1620928797028">
+      <screen x="0" y="25" width="1680" height="941" />
+    </state>
+    <state x="328" y="74" key="SettingsEditor/0.25.1680.938@0.25.1680.938" timestamp="1620927594563" />
+    <state x="328" y="74" key="SettingsEditor/0.25.1680.941@0.25.1680.941" timestamp="1620928797028" />
+    <state x="328" y="74" key="SettingsEditor/0.25.1680.944@0.25.1680.944" timestamp="1620928346622" />
     <state x="517" y="324" key="com.intellij.ide.util.TipDialog" timestamp="1620925576273">
       <screen x="0" y="25" width="1680" height="938" />
     </state>

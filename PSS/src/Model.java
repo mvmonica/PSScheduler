@@ -116,10 +116,13 @@ public class Model {
                 }
             } else {
                 day = String.valueOf(Integer.valueOf(day));
+                if(day.length() < 2)
+                    day = "0" + day;
             }
             String newDate = year + month + day;
             Task task1 = new Task(name, type, startTime, duration);
             task1.setDate(Integer.valueOf(newDate));
+            System.out.println("date: " + newDate);
             if(checkOccurrenceOverlap(task1))
                 testList.add(task1);
             else
