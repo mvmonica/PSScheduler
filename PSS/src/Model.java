@@ -130,4 +130,19 @@ public class Model {
         createTask(name, type, date, duration);
     }
 
+    /***
+     *
+     * @param name this is for the name of the file that we want to save as.
+     */
+    public void saveToFile(String name) throws FileNotFoundException {
+        //This for loop will run through all the array list elements that are basically JSON objects and save their
+        //To string output to a file.
+        PrintWriter pw = new PrintWriter(new File("./JSON_Files", name + ".json"));
+        for (int i = 0; i < testList.size(); i++) {
+            // getting every item and toString them to JSON file. each object is on a separate line.
+            pw.write(testList.get(i).toString() + "\n");
+        }
+        pw.flush();
+        pw.close();
+    }
 }
