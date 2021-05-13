@@ -121,6 +121,9 @@ public class Task {
         if(givenTime >= 13){
             realTime += Integer.valueOf(hour) - 12;
             timeHour = "pm";
+        } else if(givenTime>= 12){
+            realTime += hour;
+            timeHour = "pm";
         } else {
             realTime += hour;
         }
