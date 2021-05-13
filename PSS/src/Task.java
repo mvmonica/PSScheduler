@@ -5,6 +5,7 @@ public class Task {
     private String type;
     private float startTime;
     private float duration;
+    private int date;
     //
     private String[] RTaskList = {"Class", "Study", "Sleep", "Exercise", "Work", "Meal"};
     private String[] TTaskList = {"Visit", "Shopping", "Appointment"};
@@ -24,6 +25,12 @@ public class Task {
         }
         return true;
     }
+
+    public void setDate(int date){
+        this.date = date;
+    }
+
+    public int getDate(){return date;}
 
     public boolean checkDurationTime(float duration){
         if (duration < .25 || duration > 23.75){
@@ -102,6 +109,32 @@ public class Task {
             }
         }
         return true;
+    }
+
+    public String getRealTime(float givenTime){
+        String time = String.valueOf(givenTime);
+        String[] tokens = time.split("\\.");
+        String minutes = tokens[1];
+        String hour = tokens[0];
+        String realTime = "";
+        String timeHour = "am";
+        if(givenTime >= 13){
+            realTime += Integer.valueOf(hour) - 12;
+            timeHour = "pm";
+        } else {
+            realTime += hour;
+        }
+
+        if(minutes.length() < 2)
+            minutes += "0";
+        int minValue = Integer.valueOf(minutes);
+        minValue = minValue / 25 * 15;
+
+        if(minValue == 0)
+            realTime += ":00";
+        else
+            realTime +=  ":" + minValue;
+        return realTime + timeHour;
     }
 
     public void checkOverlaps(){

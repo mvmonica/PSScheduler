@@ -35,11 +35,15 @@ public class Model {
     public void createTask(String name, String type, float startTime, float duration, int date){
         TransientTask task = new TransientTask(name, type, startTime, duration, date);
         if((task.checkCategory()).equals("Transient")){
-            if(testList.isEmpty())
+            if(testList.isEmpty()) {
                 testList.add(task);
+                task.setDate(date);
+            }
             else{
-                if(task.checkTaskName(name, testList) && checkTransientOverlap(task))
+                if(task.checkTaskName(name, testList) && checkTransientOverlap(task)) {
                     testList.add(task);
+                    task.setDate(date);
+                }
                 else
                     System.out.println("Conflicting tasks, not added to schedule.\n");
             }
@@ -79,11 +83,15 @@ public class Model {
                     day = "01";
                 }
             } else {
-                day = String.valueOf(Integer.valueOf(day) + 1);
+                day = String.valueOf(Integer.valueOf(day));
             }
             String newDate = year + month + day;
-            Task task1 = new TransientTask(name, type, startTime, duration, Integer.valueOf(newDate));
-            testList.add(task1);
+            Task task1 = new Task(name, type, startTime, duration);
+            task1.setDate(Integer.valueOf(newDate));
+            if(checkOccurrenceOverlap(task1))
+                testList.add(task1);
+            else
+                System.out.println("Conflicting tasks, cannot add to schedule.");
             //todo - check for overlap before adding
         }
     }
@@ -166,6 +174,11 @@ public class Model {
         return true;
     }
 
+    /**
+     * Checks an overlap for a given transient task
+     * @param checkingTask
+     * @return
+     */
     public boolean checkTransientOverlap(TransientTask checkingTask){
         for (int i =0; i < testList.size(); i++) {
             Task inTask = testList.get(i);
@@ -186,6 +199,29 @@ public class Model {
                         return false;
                 }
             }
+        }
+        return true;
+    }
+
+    /**
+     * Checks the overlap of an occurrence from a recurring task
+     * @return boolean that denotes if there is an overlap
+     */
+    public boolean checkOccurrenceOverlap(Task task){
+        for (int i =0; i < testList.size(); i++) {
+            Task inTask = testList.get(i);
+                if (inTask.getDate() == task.getDate()) {
+                    float inListEndTime = inTask.getStartTime() + inTask.getDuration();
+                    float inListStart = inTask.getStartTime();
+
+                    float taskStart = task.getStartTime();
+                    float taskEndTime = task.getStartTime() + task.getDuration();
+
+                    if (inListStart <= taskStart && taskStart < inListEndTime)
+                        return false;
+                    else if(inListStart <= taskEndTime && taskEndTime < inListEndTime)
+                        return false;
+                }
         }
         return true;
     }
@@ -269,12 +305,20 @@ public class Model {
         createTask(name, type, date, duration);
     }
 
-    public void schedulePrinter(){
-        for(int i=0; i < testList.size(); i++){
-            Task t= testList.get(i);
-            System.out.println(t.getName());
-            System.out.println(t.getStartTime());
-            System.out.println(t.getDuration());
+    public void schedulePrinter(int start, int end){
+        for(int i = start; i <= end; i++){
+            String month = String.valueOf(i).substring(4, 6);
+            String day = String.valueOf(i).substring(6, 8);
+            String year = String.valueOf(i).substring(0, 4);
+            System.out.println("\n\nDate: " + month + "/" + day + "/" + year);
+            for(int j =0; j < testList.size(); j++){
+                Task t= testList.get(j);
+                if(t.getDate() == i) {
+                    System.out.println("\nTask Name: " + t.getName());
+                    System.out.println("Task start time: " + t.getRealTime(t.getStartTime()));
+                    System.out.println("Task duration: " + t.getRealTime(t.getStartTime() + t.getDuration()));
+                }
+            }
         }
     }
 

@@ -100,7 +100,22 @@ public class Controller {
 
                 taskType = scan.nextInt();
             } else if(selected == 4) {
-                testModel.schedulePrinter();
+                System.out.println("1: Daily");
+                System.out.println("2: Weekly");
+                System.out.println("3: Monthly");
+                System.out.print("Schedule type: ");
+                int scheType = scan.nextInt();
+                if(scheType == 1){
+                    System.out.print("Date to view: ");
+                    int day = scan.nextInt();
+                    testModel.schedulePrinter(day, day);
+                } else {
+                    System.out.print("From date: ");
+                    int from = scan.nextInt();
+                    System.out.print("To date: ");
+                    int end = scan.nextInt();
+                    testModel.schedulePrinter(from, end);
+                }
                 con = false;
             }
             scan.nextLine();
