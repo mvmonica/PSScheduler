@@ -6,13 +6,14 @@ public class Controller {
     public static void main(String[] args) throws Exception{
         Model testModel = new Model();
 
-        testModel.createTask("CS 3560", "Class", 12.26f, 4.5f); //basic task test
+       /* testModel.createTask("CS 3560", "Class", 12.26f, 4.5f); //basic task test
         //testModel.createTask("CS 1400", "Class", 12.26f, 4.5f, 1234567, 1234567, 7); //recurring task test
         testModel.viewTask("CS 3560");
         System.out.println();
         testModel.viewTask("CS 1400");
 
-        userInterface(testModel);
+        userInterface(testModel);*/
+        demo(testModel);
     }
 
     public static void userInterface(Model testModel){
@@ -79,11 +80,7 @@ public class Controller {
         scnr.close();
     }
 
-    public void demo(Model testModel){
-                /*testModel.viewTask("CS 3560");
-        System.out.println();
-        testModel.viewTask("CS 1400");*/
-
+    public static void demo(Model testModel){
         boolean con = true;
         do {
 
@@ -92,7 +89,7 @@ public class Controller {
             System.out.println("1: Add a task");
             System.out.println("2: Delete a task");
             System.out.println("3: Edit a task");
-            System.out.println("4: Exit program");
+            System.out.println("4: View Schedule");
             Scanner scan = new Scanner(System.in);
             int selected = scan.nextInt();
             int taskType = 0;
@@ -102,7 +99,8 @@ public class Controller {
                 System.out.println("2: Recurring Task");
 
                 taskType = scan.nextInt();
-            } else if(selected == 4){
+            } else if(selected == 4) {
+                testModel.schedulePrinter();
                 con = false;
             }
             scan.nextLine();
@@ -144,6 +142,7 @@ public class Controller {
 
                 System.out.println("Enter frequency (1, 7, 30): ");
                 int freq = scan.nextInt();
+                testModel.createTask(name, cat, time, duration, startDate, endDate, freq);
             }
 
         } while(con);

@@ -41,10 +41,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 
-*//**
- *
- * @author Preni
- *//*
+
 public class PSS extends Application
 {
     // to hold the overall page and be able to change scenes
@@ -247,3 +244,4 @@ public class PSS extends Application
         return guiStage;
     }  
 }
+

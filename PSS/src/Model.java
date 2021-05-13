@@ -34,7 +34,7 @@ public class Model {
 
     public void createTask(String name, String type, float startTime, float duration, int date){
         TransientTask task = new TransientTask(name, type, startTime, duration, date);
-        if(task.checkCategory()){
+        if((task.checkCategory()).equals("Transient")){
             if(testList.isEmpty())
                 testList.add(task);
             else{
@@ -50,17 +50,13 @@ public class Model {
 
     public void createTask(String name, String type, float startTime, float duration, int startDate, int endDate, int freq){
         Task task = new RecurringTask(name, type, startTime, duration, startDate, endDate, freq);
-        if(task.checkCategory() && (startDate < endDate)) {
-            if (testList.isEmpty())
-                testList.add(task);
-            else {
-                boolean valid = true;
-                if (task.checkTaskName(name, testList)) {
-                    if(freq == 1)
-                        addRecurringDaily(name, type, startTime, duration, startDate, endDate);
-                    else if(freq == 30)
-                        addRecurringWeekly(name, type, startTime, duration, startDate, endDate);
-                }
+        if((task.checkCategory()).equals("Recurring") && (startDate < endDate)) {
+            boolean valid = true;
+            if (task.checkTaskName(name, testList)) {
+                if(freq == 1)
+                    addRecurringDaily(name, type, startTime, duration, startDate, endDate);
+                else if(freq == 30)
+                    addRecurringWeekly(name, type, startTime, duration, startDate, endDate);
             }
         } else {
             System.out.println("Invalid Category or start and end date.\n");
@@ -68,13 +64,13 @@ public class Model {
     }
 
     public void addRecurringDaily(String name, String type, float startTime, float duration, int startDate, int endDate){
-        for (int i = startDate; i < endDate; i++) {
+        for (int i = startDate; i <= endDate; i++) {
             String month = String.valueOf(i).substring(4, 6);
             String day = String.valueOf(i).substring(6, 8);
             String year = String.valueOf(i).substring(0, 4);
             int maxDay = calculateMaxDays(month);
             if (Integer.valueOf(day) > maxDay) {
-                if (year.equals("12")) {
+                if (month.equals("12")) {
                     month = "01";
                     day = "01";
                     year = String.valueOf(Integer.valueOf(year) + 1);
@@ -87,6 +83,8 @@ public class Model {
             }
             String newDate = year + month + day;
             Task task1 = new TransientTask(name, type, startTime, duration, Integer.valueOf(newDate));
+            testList.add(task1);
+            //todo - check for overlap before adding
         }
     }
 
@@ -116,7 +114,7 @@ public class Model {
 
     public void createRecurring(String name, String type, float startTime, float duration, int date){
         TransientTask task = new TransientTask(name, type, startTime, duration, date);
-        if(task.checkCategory()){
+        if((task.checkCategory()).equals("Transient")){
             if(testList.isEmpty())
                 testList.add(task);
             else{
@@ -271,6 +269,15 @@ public class Model {
         createTask(name, type, date, duration);
     }
 
+    public void schedulePrinter(){
+        for(int i=0; i < testList.size(); i++){
+            Task t= testList.get(i);
+            System.out.println(t.getName());
+            System.out.println(t.getStartTime());
+            System.out.println(t.getDuration());
+        }
+    }
+
     /***
      *
      * @param name this is for the name of the file that we want to save as.
@@ -285,5 +292,6 @@ public class Model {
         }
         pw.flush();
         pw.close();
+
     }
 }

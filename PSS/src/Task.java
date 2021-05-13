@@ -78,20 +78,20 @@ public class Task {
         return "Invalid Task Type";
     }
 
-    public boolean checkCategory(){
+    public String checkCategory(){
         for(String rTypeList: RTaskList){
             if(type.equals(rTypeList))
-                return true;
+                return "Recurring";
         }
         for(String tTypeList: TTaskList){
             if(type.equals(tTypeList))
-                return true;
+                return "Transient";
         }
         for(String aTypeList: ATaskList){
             if(type.equals(aTypeList))
-                return true;
+                return "Anti";
         }
-        return false;
+        return "invalid";
     }
 
     //true = valid name
