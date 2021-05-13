@@ -155,4 +155,20 @@ public class Task {
     public float getDuration() {
         return duration;
     }
+
+    public void setName(String nextLine) {
+        this.name = nextLine;
+    }
+
+    public void setCategory(String nextLine) {
+        this.type = nextLine;
+    }
+
+    public void setStart(float nextFloat) {
+        startTime = nextFloat;
+    }
+
+    public void setDuration(float nextFloat) {
+        duration = nextFloat;
+    }
 }

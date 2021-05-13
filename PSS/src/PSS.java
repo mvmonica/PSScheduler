@@ -1,4 +1,4 @@
-//package pss;
+/*//package pss;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
@@ -243,5 +243,5 @@ public class PSS extends Application
     {
         return guiStage;
     }  
-}
+}*/
 

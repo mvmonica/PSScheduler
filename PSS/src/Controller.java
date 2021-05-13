@@ -82,25 +82,42 @@ public class Controller {
 
     public static void demo(Model testModel){
         boolean con = true;
+        System.out.println("\nWelcome to your PSS");
         do {
 
-            System.out.println("Welcome to your PSS");
-            System.out.println("Select an activity:");
-            System.out.println("1: Add a task");
+            System.out.println("\n\n1: Add a task");
             System.out.println("2: Delete a task");
             System.out.println("3: Edit a task");
             System.out.println("4: View Schedule");
+            System.out.print("Select an activity: ");
             Scanner scan = new Scanner(System.in);
             int selected = scan.nextInt();
             int taskType = 0;
 
             if (selected == 1) {
-                System.out.println("1: Transient Task");
+                System.out.println("\n1: Transient Task");
                 System.out.println("2: Recurring Task");
-
+                System.out.print("Task Type: ");
                 taskType = scan.nextInt();
+                scan.nextLine();
+            } else if(selected == 2) {
+                System.out.print("\nEnter a date: ");
+                int date = scan.nextInt();
+                System.out.print("Enter a name: ");
+                scan.nextLine();
+                String name = scan.nextLine();
+
+                testModel.deleteTask(name, date);
+            } else if(selected == 3){
+                System.out.print("\nEnter a date: ");
+                int date = scan.nextInt();
+                System.out.print("Enter a name: ");
+                scan.nextLine();
+                String name = scan.nextLine();
+
+                testModel.editTask(date, name);
             } else if(selected == 4) {
-                System.out.println("1: Daily");
+                System.out.println("\n1: Daily");
                 System.out.println("2: Weekly");
                 System.out.println("3: Monthly");
                 System.out.print("Schedule type: ");
@@ -108,20 +125,20 @@ public class Controller {
                 if(scheType == 1){
                     System.out.print("Date to view: ");
                     int day = scan.nextInt();
+                    scan.nextLine();
                     testModel.schedulePrinter(day, day);
                 } else {
                     System.out.print("From date: ");
                     int from = scan.nextInt();
                     System.out.print("To date: ");
                     int end = scan.nextInt();
+                    scan.nextLine();
                     testModel.schedulePrinter(from, end);
                 }
-                con = false;
             }
-            scan.nextLine();
 
             if (taskType == 1) {
-                System.out.println("Enter a name: ");
+                System.out.println("\nEnter a name: ");
                 String name = scan.nextLine();
 
                 System.out.println("Enter Task Category: ");
@@ -137,7 +154,7 @@ public class Controller {
                 int date = scan.nextInt();
                 testModel.createTask(name, cat, time, duration, date);
             } else if (taskType == 2) {
-                System.out.println("Enter a name: ");
+                System.out.println("\nEnter a name: ");
                 String name = scan.nextLine();
 
                 System.out.println("Enter Task Category: ");
