@@ -1,12 +1,18 @@
 import java.util.*;
 import java.io.*;
 import org.json.simple.*;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 
 public class Model {
     private ArrayList<Task> testList = new ArrayList<>();
     private List<String> monthsWith30 = List.of("04", "06", "09", "11");
     private List<String> monthsWith31 = List.of("01", "03", "05", "07", "08", "10", "12");
+
+    private String[] RTaskList = {"Class", "Study", "Sleep", "Exercise", "Work", "Meal"};
+    private String[] TTaskList = {"Visit", "Shopping", "Appointment"};
+    private String[] ATaskList = {"Cancellation"};
 
     
     public void createTask(String name, String type, float startTime, float duration) throws FileNotFoundException {
@@ -454,5 +460,92 @@ public class Model {
         pw.flush();
         pw.close();
 
+    }
+    
+    public void readFromFile(String name) throws IOException, ParseException {
+        JSONParser jsonParser = new JSONParser();
+
+        FileReader reader = new FileReader("..\\JSON_Files\\" + name);
+        Object obj = jsonParser.parse(reader);
+
+        JSONArray list = (JSONArray) obj;
+
+        //Sends in each object inside the file read from above to the parseTask method to parse data inside.
+        for (Object o : list) {
+            System.out.println(o);
+            parseTask((JSONObject) o);
+        }
+    }
+
+    /***
+     * This method will take in a Task in JSONObject format from the file inputted by the user and parse every data in it
+     * to all the sections we need.
+     * @param Task This is a JSON Object that has multiple values.
+     */
+    private static void parseTask (JSONObject Task) throws FileNotFoundException {
+        //Make a JSON object
+        JSONObject obj = new JSONObject();
+        Model m = new Model();
+
+        //Get Task name
+        String Name = (String) Task.get("Name");
+        System.out.println(Name);
+
+        //Start time
+        long StartTime1 = (long) Task.get("StartTime");
+        float StartTime = (float) StartTime1;
+        System.out.println(StartTime1);
+
+        //Get duration
+        double Duration1 = (double) Task.get("Duration");
+        float Duration = (float) Duration1;
+        System.out.println(Duration);
+
+        /**
+         * This section is just for the recurring tasks.
+         * Type of the task if it is recurring then we are gonna look for more information.
+         **/
+
+        String Type = (String) Task.get("Type");
+        Type = m.checkCategory(Type);
+        System.out.println(Type);
+
+
+        if (Type.equalsIgnoreCase("recurring")){
+            //frequency
+            int Frequency = (int) Task.get("Frequency");
+
+            System.out.println(Frequency);
+
+            //Start date
+            int StartDate = (int) Task.get("StartDate");
+            System.out.println(StartDate);
+
+            //Get end date
+            int EndDate = (int) Task.get("EndDate");
+            System.out.println(EndDate);
+
+            //Creating a recurring task
+            m.createTask(Name, Type, StartTime, Duration, StartDate, EndDate, Frequency );
+        }else{
+            //Creating a normal task
+            m.createTask(Name, Type, StartTime, Duration);
+        }
+    }
+
+    public String checkCategory(String type){
+        for(String rTypeList: RTaskList){
+            if(type.equals(rTypeList))
+                return "Recurring";
+        }
+        for(String tTypeList: TTaskList){
+            if(type.equals(tTypeList))
+                return "Transient";
+        }
+        for(String aTypeList: ATaskList){
+            if(type.equals(aTypeList))
+                return "Anti";
+        }
+        return "invalid";
     }
 }
