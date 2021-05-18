@@ -1,3 +1,4 @@
+import org.json.simple.JSONObject;
 import java.util.ArrayList;
 
 public class RecurringTask extends Task{
@@ -20,5 +21,38 @@ public class RecurringTask extends Task{
             System.out.println("invalid!");
 
 
+    }
+
+    /**
+     * This method will return a JSON object of this specific instance of recurring task
+     * @return JSON object
+     */
+    public JSONObject getJSON(){
+        JSONObject obj = new JSONObject();
+
+        //Putting all the field objects to the JSON object
+        obj.put("Name" , getName());
+        obj.put("Type" , getType());
+        obj.put("StartTime" , getStartTime());
+        obj.put("Duration" , getDuration());
+        obj.put("Date" , getDate()));
+
+        obj.put("StartDate" , startDate);
+        obj.put("EndDate" , endDate);
+        obj.put("Frequency" , frequency);
+
+        return obj;
+    }
+   
+    public int getStartDate() {
+        return startDate;
+    }
+
+    public int getEndDate() {
+        return endDate;
+    }
+
+    public float getFrequency() {
+        return frequency;
     }
 }

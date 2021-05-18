@@ -1,3 +1,4 @@
+import org.json.simple.JSONObject;
 import java.util.ArrayList;
 
 public class Task {
@@ -141,6 +142,23 @@ public class Task {
     }
 
     public void checkOverlaps(){
+    }
+
+    /**
+     * This method will return a JSON object of this specific instance of TASK
+     * @return JSON object
+     */
+    public JSONObject getJSON(){
+        JSONObject obj = new JSONObject();
+
+        //Putting all the field objects to the JSON object
+        obj.put("Name" , name);
+        obj.put("Type" , type);
+        obj.put("StartTime" , startTime);
+        obj.put("Duration" , duration);
+        obj.put("Date" , date);
+
+        return obj;
     }
 
     public String getName() {
