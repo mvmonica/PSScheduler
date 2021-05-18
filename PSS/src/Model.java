@@ -8,6 +8,8 @@ import org.json.simple.JSONObject;
 
 public class Model {
     private ArrayList<Task> testList = new ArrayList<>();
+    private ArrayList<Task> testListDummy = new ArrayList<>();
+    private ArrayList<Task> testListDummySchedule = new ArrayList<>();
     private List<String> monthsWith30 = List.of("04", "06", "09", "11");
     private List<String> monthsWith31 = List.of("01", "03", "05", "07", "08", "10", "12");
 
@@ -17,8 +19,8 @@ public class Model {
 
     
     public void createTask(String name, String type, float startTime, float duration) throws FileNotFoundException {
-//        testList.add(new Task(name, type, startTime, duration));
-/*
+/*      testList.add(new Task(name, type, startTime, duration));
+
         JSONObject jo = new JSONObject();
 
         // putting data to JSONObject
@@ -119,6 +121,8 @@ public class Model {
                     year = String.valueOf(Integer.valueOf(year) + 1);
                 } else {
                     month = String.valueOf(Integer.valueOf(month) + 1);
+                    if(month.length() < 2)
+                    month = "0" + month;
                     day = "01";
                 }
             } else {
@@ -127,6 +131,7 @@ public class Model {
                     day = "0" + day;
             }
             String newDate = year + month + day;
+            i = Integer.valueOf(newDate);
             Task task1 = new Task(name, type, startTime, duration);
             task1.setDate(Integer.valueOf(newDate));
             if(checkOccurrenceOverlap(task1))
@@ -154,23 +159,27 @@ public class Model {
             String year = String.valueOf(i).substring(0, 4);
             int maxDay = calculateMaxDays(month, year);
             if (Integer.valueOf(day) > maxDay) {
-                day = String.valueOf(i - maxDay);
+                //day = String.valueOf(i - maxDay);
+                day = String.valueOf(Integer.valueOf(day) - maxDay);
                 day = day.length() < 2 ? "0" + day : day;
                 if (month.equals("12")) {
                     month = "01";
                     year = String.valueOf(Integer.valueOf(year) + 1);
                 } else {
                     month = String.valueOf(Integer.valueOf(month) + 1);
+                    if(month.length() < 2)
+                    month = "0" + month;
                 }
             } else {
                 day = String.valueOf(Integer.valueOf(day));
             }
             String newDate = year + month + day;
+            i = Integer.valueOf(newDate);
             Task task1 = new Task(name, category, startTime, duration);
             task1.setDate(Integer.valueOf(newDate));
             if(checkOccurrenceOverlap(task1)){
                 testList.add(task1);
-                System.out.println("day " + i);
+                System.out.println("day: " + i);
             }
             else
                 System.out.println("Conflicting tasks, cannot add to schedule.");
@@ -498,14 +507,34 @@ public class Model {
         System.out.println(Name);
 
         //Start time
-        double StartTime1 = (double) Task.get("StartTime");
-        float StartTime = (float) StartTime1;
-        System.out.println(StartTime1);
+        String startTimeType = Task.get("StartTime").getClass().toString();
+        //System.out.println(startTimeType);
+        float StartTime = 0f;
+        if(startTimeType.equals("class java.lang.Double")){
+            double StartTime1 = (double) Task.get("StartTime");
+            StartTime = (float) StartTime1;
+            System.out.println(StartTime);
+        }
+        else if(startTimeType.equals("class java.lang.Long")){
+            long StartTime1 = (long) Task.get("StartTime");
+            StartTime = (float) StartTime1;
+            System.out.println(StartTime);
+        }
 
         //Get duration
-        double Duration1 = (double) Task.get("Duration");
-        float Duration = (float) Duration1;
-        System.out.println(Duration);
+        String durationType = Task.get("Duration").getClass().toString();
+        //System.out.println(durationType);
+        float Duration = 0f;
+        if(durationType.equals("class java.lang.Double")){
+            double Duration1 = (double) Task.get("Duration");
+            Duration = (float) Duration1;
+            System.out.println(Duration);
+        }
+        else{ //if(durationType.equals("class java.lang.Long")){
+            long Duration1 = (long) Task.get("Duration");
+            Duration = (float) Duration1;
+            System.out.println(Duration);
+        }
 
         /**
          * This section is just for the recurring tasks.
