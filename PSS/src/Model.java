@@ -3,6 +3,7 @@ import java.io.*;
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.json.simple.JSONObject;
 
 
 public class Model {
@@ -167,13 +168,16 @@ public class Model {
             String newDate = year + month + day;
             Task task1 = new Task(name, category, startTime, duration);
             task1.setDate(Integer.valueOf(newDate));
-            if(checkOccurrenceOverlap(task1))
+            if(checkOccurrenceOverlap(task1)){
                 testList.add(task1);
+                System.out.println("day " + i);
+            }
             else
                 System.out.println("Conflicting tasks, cannot add to schedule.");
         }
     }
 
+    /*
     public void addRecurringMonthly(String name, String category, float startTime, float duration, int startDate, int endDate){
         for (int i = startDate; i < endDate; i += 30) {
             String month = String.valueOf(i).substring(4, 6);
@@ -206,7 +210,7 @@ public class Model {
             }
         }
     }
-
+*/
 
     /**
      * Calculates the last day of the given month
@@ -452,11 +456,14 @@ public class Model {
     public void saveToFile(String name) throws FileNotFoundException {
         //This for loop will run through all the array list elements that are basically JSON objects and save their
         //To string output to a file.
+        JSONArray taskJSONList = new JSONArray();
         PrintWriter pw = new PrintWriter(new File("./JSON_Files", name + ".json"));
-        for (int i = 0; i < testList.size(); i++) {
-            // getting every item and toString them to JSON file. each object is on a separate line.
-            pw.write(testList.get(i).toString() + "\n");
+        for (int i = 0; i < testList.size(); i++){
+            JSONObject tempObject = testList.get(i).getJSON();
+            taskJSONList.add(tempObject);
         }
+        pw.write(taskJSONList.toJSONString());
+
         pw.flush();
         pw.close();
 
@@ -465,7 +472,7 @@ public class Model {
     public void readFromFile(String name) throws IOException, ParseException {
         JSONParser jsonParser = new JSONParser();
 
-        FileReader reader = new FileReader("..\\JSON_Files\\" + name);
+        FileReader reader = new FileReader(".\\JSON_Files\\" + name + ".json");
         Object obj = jsonParser.parse(reader);
 
         JSONArray list = (JSONArray) obj;
@@ -482,17 +489,16 @@ public class Model {
      * to all the sections we need.
      * @param Task This is a JSON Object that has multiple values.
      */
-    private static void parseTask (JSONObject Task) throws FileNotFoundException {
+    private void parseTask (JSONObject Task) throws FileNotFoundException {
         //Make a JSON object
         JSONObject obj = new JSONObject();
-        Model m = new Model();
-
+        
         //Get Task name
         String Name = (String) Task.get("Name");
         System.out.println(Name);
 
         //Start time
-        long StartTime1 = (long) Task.get("StartTime");
+        double StartTime1 = (double) Task.get("StartTime");
         float StartTime = (float) StartTime1;
         System.out.println(StartTime1);
 
@@ -507,29 +513,46 @@ public class Model {
          **/
 
         String Type = (String) Task.get("Type");
-        Type = m.checkCategory(Type);
+        String tempType = checkCategory(Type);
         System.out.println(Type);
+        System.out.println(tempType);
 
-
-        if (Type.equalsIgnoreCase("recurring")){
+        if (tempType.equalsIgnoreCase("recurring")){
             //frequency
-            int Frequency = (int) Task.get("Frequency");
-
+            long Frequency1 = (long) Task.get("Frequency");
+            int Frequency = (int) Frequency1;
             System.out.println(Frequency);
 
             //Start date
-            int StartDate = (int) Task.get("StartDate");
+            long StartDate1 = (long) Task.get("StartDate");
+            int StartDate = (int) StartDate1;
             System.out.println(StartDate);
 
             //Get end date
-            int EndDate = (int) Task.get("EndDate");
+            long EndDate1 = (long) Task.get("EndDate");
+            int EndDate = (int) EndDate1;
             System.out.println(EndDate);
 
             //Creating a recurring task
-            m.createTask(Name, Type, StartTime, Duration, StartDate, EndDate, Frequency );
-        }else{
-            //Creating a normal task
-            m.createTask(Name, Type, StartTime, Duration);
+            createTask(Name, Type, StartTime, Duration, StartDate, EndDate, Frequency );
+        }
+        else if(tempType.equalsIgnoreCase("transient")){
+            long Date1 = (long) Task.get("Date");
+            int Date = (int) Date1;
+            System.out.println(Date);
+
+            //Creating a transient task
+            createTask(Name, Type, StartTime, Duration, Date);
+        }
+        else if(tempType.equalsIgnoreCase("anti")){
+            long Date1 = (long) Task.get("Date");
+            int Date = (int) Date1;
+            System.out.println(Date);
+
+            //Creating a anti task
+
+            //since this line has the same inputs as transient task we need a new handler in create task
+            //createTask(Name, Type, StartTime, Duration, Date);
         }
     }
 
