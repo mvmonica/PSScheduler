@@ -1,6 +1,7 @@
-
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
+import org.json.simple.parser.ParseException;
 
 public class Controller {
     public static void main(String[] args) throws Exception{
@@ -16,71 +17,7 @@ public class Controller {
         demo(testModel);
     }
 
-    public static void userInterface(Model testModel){
-        Scanner scnr = new Scanner(System.in);
-        boolean exit = false;
-        while(!exit){
-            System.out.println("\nPlease select your chosen operation:" +
-            "\n1) Read from file"+
-            "\n2) Save schedule to file"+
-            "\n3) View schedule"+
-            "\n4) Add task"+
-            "\n5) Delete task"+
-            "\n6) Edit task"+
-            "\n7) Exit\n");
-
-            String chosenOperation = scnr.nextLine();
-          
-            if (chosenOperation.equals("1")){
-                System.out.println("you typed 1");
-            }
-            else if (chosenOperation.equals("2")){
-                System.out.println("you typed 2");
-            }
-            else if (chosenOperation.equals("3")){
-                System.out.println("you typed 3");
-            }
-            else if (chosenOperation.equals("4")){
-                System.out.print("Task name:");
-                String name = scnr.nextLine();
-                
-                System.out.print("Task Type:");
-                String type = scnr.nextLine();
-
-                System.out.print("Task Type:");
-                float startTime = scnr.nextFloat();
-
-                System.out.print("Task Type:");
-                float duration = scnr.nextFloat();
-
-
-                try {
-                    testModel.createTask(name, type, startTime, duration);
-                } catch (FileNotFoundException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-             
-                
-            }
-            else if (chosenOperation.equals("5")){
-                System.out.println("you typed 5");
-            }
-            else if (chosenOperation.equals("6")){
-                System.out.println("you typed 6");
-            }
-            else if (chosenOperation.equals("7")){
-                System.out.println("you typed 7");
-                exit = true;
-            }
-            else{
-                System.out.println("invalid input");
-            }
-        }   
-        scnr.close();
-    }
-
-    public static void demo(Model testModel){
+    public static void demo(Model testModel) throws IOException, ParseException{
         boolean con = true;
         System.out.println("\nWelcome to your PSS");
         do {
@@ -89,6 +26,9 @@ public class Controller {
             System.out.println("2: Delete a task");
             System.out.println("3: Edit a task");
             System.out.println("4: View Schedule");
+            System.out.println("5: Open File");
+            System.out.println("6: Save File");
+            System.out.println("7: Exit");
             System.out.print("Select an activity: ");
             Scanner scan = new Scanner(System.in);
             int selected = scan.nextInt();
@@ -135,7 +75,25 @@ public class Controller {
                     scan.nextLine();
                     testModel.schedulePrinter(from, end);
                 }
+            } else if(selected == 5){
+                System.out.print("\nFile Name: ");
+                scan.nextLine();
+                String fileName = scan.nextLine();
+                System.out.print(fileName);
+
+                testModel.readFromFile(fileName);
+            } else if(selected == 6){
+                System.out.print("\nFile Name: ");
+                scan.nextLine();
+                String fileName = scan.nextLine();
+                System.out.print(fileName);
+
+                testModel.saveToFile(fileName);
+            } else if(selected == 7){
+                con = false;
+                System.out.print("\nGood bye");
             }
+
 
             if (taskType == 1) {
                 System.out.println("\nEnter a name: ");
@@ -172,12 +130,14 @@ public class Controller {
                 System.out.println("Enter an end date: ");
                 int endDate = scan.nextInt();
 
-                System.out.println("Enter frequency (1, 7, 30): ");
+                System.out.println("Enter frequency (1, 7): ");
                 int freq = scan.nextInt();
                 testModel.createTask(name, cat, time, duration, startDate, endDate, freq);
             }
 
         } while(con);
+
+        
     }
 
     public void writeSchedule(String fileName){
