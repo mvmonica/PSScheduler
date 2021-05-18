@@ -6,6 +6,21 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch Controller",
+            "request": "launch",
+            "mainClass": "Controller",
+            "projectName": "PSScheduler_1b380c77"
+        },
+        {
+            "type": "java",
+            "name": "Launch PSS",
+            "request": "launch",
+            "mainClass": "PSS",
+            "vmArgs": "--module-path PSS/javafx-sdk-11.0.2/lib --add-modules javafx.controls,javafx.fxml",
+            "projectName": "PSScheduler_1b380c77"
+        },
+        {
+            "type": "java",
             "name": "Launch Current File",
             "request": "launch",
             "mainClass": "${file}"
