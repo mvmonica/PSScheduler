@@ -37,6 +37,7 @@ public class Controller {
             if (selected == 1) {
                 System.out.println("\n1: Transient Task");
                 System.out.println("2: Recurring Task");
+                System.out.println("3: Anti Task");
                 System.out.print("Task Type: ");
                 taskType = scan.nextInt();
                 scan.nextLine();
@@ -133,6 +134,22 @@ public class Controller {
                 System.out.println("Enter frequency (1, 7): ");
                 int freq = scan.nextInt();
                 testModel.createTask(name, cat, time, duration, startDate, endDate, freq);
+            }else if(taskType == 3) {
+                System.out.println("\nEnter a name: ");
+                String name = scan.nextLine();
+
+                System.out.println("Enter Task Category: ");
+                String cat = scan.nextLine();
+
+                System.out.println("Enter start time: ");
+                float time = scan.nextFloat();
+
+                System.out.println("Enter a duration: ");
+                float duration = scan.nextFloat();
+
+                System.out.println("Enter a date: ");
+                int date = scan.nextInt();
+                testModel.createAntiTask(name, cat, time, duration, date);
             }
 
         } while(con);
