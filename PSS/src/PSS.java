@@ -1,6 +1,10 @@
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -39,8 +43,10 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.web.WebEngine;
 import java.time.LocalDate;
-import javafx.scene.control.DatePicker;
+import java.util.Observable;
 
+import javafx.scene.control.DatePicker;
+import java.awt.event.*;
 
 public class PSS extends Application
 {
@@ -171,14 +177,50 @@ public class PSS extends Application
         final ComboBox taskComboBox = new ComboBox();
         taskComboBox.getItems().addAll("Transient Task", "Recurring Task", "AntiTask");
         final ComboBox typetaskComboBox = new ComboBox();
-        typetaskComboBox.getItems().addAll("Class", "Study", "Sleep", "Exercise", "Work", "Meal", "Visit", "Shopping", "Appointment", "Cancellation");
         final ComboBox frequencyComboBox = new ComboBox();
-        frequencyComboBox.getItems().addAll("Daily", "Weekly");
+        DatePicker startDatePicker = new DatePicker();
+        DatePicker endDatePicker = new DatePicker();
+        final ObservableList<String> typetransList = FXCollections.observableArrayList("Visit", "Shopping", "Appointment");
+        final ObservableList<String> typerecurList = FXCollections.observableArrayList("Class", "Study", "Sleep", "Exercise", "Work", "Meal");
+        final ObservableList<String> typeantiList = FXCollections.observableArrayList("Cancellation");
+        final ObservableList<String> freqList = FXCollections.observableArrayList("Daily", "Weekly");
+       taskComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener()
+       {
+           public void changed(ObservableValue ov, Object t, Object t1)
+           {
+               switch (t1.toString()){
+                   case "Transient Task":
+                        typetaskComboBox.setItems(typetransList);
+                        createPage.add(new Label("Select the date:"), 0, 3);
+                        createPage.add(startDatePicker, 1, 3);
+                        break;
+                    case "Recurring Task":
+                        createPage.add(new Label(" "), 0, 3);
+                        createPage.add(new Label(" "), 1, 3);
+                        typetaskComboBox.setItems(typerecurList);
+                        frequencyComboBox.setItems(freqList);
+                        createPage.add(new Label("Select the start date:"), 0, 3);
+                        createPage.add(startDatePicker, 1, 3);
+                        createPage.add(new Label("Select the end date:"), 0, 4);
+                        createPage.add(endDatePicker, 1, 4);
+                        createPage.add(new Label("Frequency: "), 0, 7);
+                        createPage.add(frequencyComboBox, 1, 7);
+                        break;
+                    case "AntiTask":
+                        typetaskComboBox.setItems(typeantiList);
+                        createPage.add(new Label("Select the date:"), 0, 3);
+                        createPage.add(startDatePicker, 1, 3);
+                        break;
+               }
+           }
+           
+       });
+        
+        //frequencyComboBox.getItems().addAll("Daily", "Weekly");
         final TextField name = new TextField();
         final TextField duration = new TextField();
         final TextField startTime = new TextField();
-        DatePicker startDatePicker = new DatePicker();
-        DatePicker endDatePicker = new DatePicker();
+        
         startDatePicker.setValue(LocalDate.now());
         endDatePicker.setValue(startDatePicker.getValue().plusDays(1));
         createPage.add(new Label("Name of task: "), 0, 0);
@@ -187,16 +229,16 @@ public class PSS extends Application
         createPage.add(taskComboBox, 1, 1);
         createPage.add(new Label("Select the type of task:"), 0, 2);
         createPage.add(typetaskComboBox, 1, 2);
-        createPage.add(new Label("Select the start date:"), 0, 3);
-        createPage.add(startDatePicker, 1, 3);
-        createPage.add(new Label("Select the end date:"), 0, 4);
-        createPage.add(endDatePicker, 1, 4);
+        //createPage.add(new Label("Select the start date:"), 0, 3);
+        //createPage.add(startDatePicker, 1, 3);
+        //createPage.add(new Label("Select the end date:"), 0, 4);
+        //createPage.add(endDatePicker, 1, 4);
         createPage.add(new Label("Start time of the task: "), 0, 5);
         createPage.add(startTime, 1, 5);
         createPage.add(new Label("Duartion of the task: "), 0, 6);
         createPage.add(duration, 1, 6);
-        createPage.add(new Label("Frequency: "), 0, 7);
-        createPage.add(frequencyComboBox, 1, 7);
+        //createPage.add(new Label("Frequency: "), 0, 7);
+        //createPage.add(frequencyComboBox, 1, 7);
         
         
         //Vbox for the view button's page
