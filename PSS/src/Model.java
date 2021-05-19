@@ -57,12 +57,14 @@ public class Model {
         if((task.checkCategory()).equals("Transient")){
             if(testList.isEmpty()) {
                 testList.add(task);
-                task.setDate(date);
+                testListDummy.add(task);
+                //task.setDate(date);
             }
             else{
                 if(task.checkTaskName(name, testList) && checkTransientOverlap(task)) {
                     testList.add(task);
-                    task.setDate(date);
+                    testListDummy.add(task);
+                    //task.setDate(date);
                 }
                 else
                     System.out.println("Conflicting tasks, not added to schedule.\n");
@@ -91,6 +93,7 @@ public class Model {
                     addRecurringDaily(name, category, startTime, duration, startDate, endDate);
                 else if(freq == 7)
                     addRecurringWeekly(name, category, startTime, duration, startDate, endDate);
+                testListDummy.add(task);
             }
         } else {
             System.out.println("Invalid Category or start and end date.\n");
@@ -337,6 +340,12 @@ public class Model {
                 testList.remove(i);
             }
         }
+        for (int i = 0; i < testListDummy.size(); i++){
+            Task temp = testListDummy.get(i);
+            if (temp.getName().equals(name)){
+                testListDummy.remove(i);
+            }
+        }
     }
 
     public void editTask(String name) throws FileNotFoundException {
@@ -467,8 +476,8 @@ public class Model {
         //To string output to a file.
         JSONArray taskJSONList = new JSONArray();
         PrintWriter pw = new PrintWriter(new File("./JSON_Files", name + ".json"));
-        for (int i = 0; i < testList.size(); i++){
-            JSONObject tempObject = testList.get(i).getJSON();
+        for (int i = 0; i < testListDummy.size(); i++){
+            JSONObject tempObject = testListDummy.get(i).getJSON();
             taskJSONList.add(tempObject);
         }
         pw.write(taskJSONList.toJSONString());
