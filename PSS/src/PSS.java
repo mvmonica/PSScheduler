@@ -245,6 +245,21 @@ public class PSS extends Application
            }
            
        });
+       typetaskComboBox.setOnAction((event) -> 
+        {
+            Object selectedItem = typetaskComboBox.getSelectionModel().getSelectedItem(); //this is the way that user input would be registered but could not get the PSS to conect to the controller 
+            System.out.println("Selection made: " + selectedItem);
+        });
+        taskComboBox.setOnAction((event) -> 
+        {
+            Object selectedItem = taskComboBox.getSelectionModel().getSelectedItem(); //this is the way that user input would be registered but could not get the PSS to conect to the controller 
+            System.out.println("Selection made: " + selectedItem);
+        });
+        frequencyComboBox.setOnAction((event) -> 
+        {
+            Object selectedItem = frequencyComboBox.getSelectionModel().getSelectedItem(); //this is the way that user input would be registered but could not get the PSS to conect to the controller 
+            System.out.println("Selection made: " + selectedItem);
+        });
         
         //frequencyComboBox.getItems().addAll("Daily", "Weekly");
         final TextField name = new TextField();
@@ -344,6 +359,25 @@ public class PSS extends Application
         editPage.add(newduration, 1, 6);
         editPage.add(new Label("New frequency: "), 0, 7);
         editPage.add(newfrequencyComboBox, 1, 7);
+        /*name4.textProperty.addListener((obver, oldValue, newValue) -> //wasn't sure how to get text user input 
+        {
+    
+        });*/
+        newtypetaskComboBox.setOnAction((event) -> 
+        {
+            Object selectedItem = newtypetaskComboBox.getSelectionModel().getSelectedItem(); //this is the way that user input would be registered but could not get the PSS to conect to the controller 
+            System.out.println("Selection made: " + selectedItem);
+        });
+        newtaskComboBox.setOnAction((event) -> 
+        {
+            Object selectedItem = newtaskComboBox.getSelectionModel().getSelectedItem(); //this is the way that user input would be registered but could not get the PSS to conect to the controller 
+            System.out.println("Selection made: " + selectedItem);
+        });
+        newfrequencyComboBox.setOnAction((event) -> 
+        {
+            Object selectedItem = newfrequencyComboBox.getSelectionModel().getSelectedItem(); //this is the way that user input would be registered but could not get the PSS to conect to the controller 
+            System.out.println("Selection made: " + selectedItem);
+        });
 
         Label temp6 = new Label("");
         VBox viewschedulePageVbox = new VBox(temp4);
