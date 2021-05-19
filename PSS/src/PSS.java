@@ -144,11 +144,40 @@ public class PSS extends Application
         edit.setOnMouseExited(e -> {
             edit.setFill(Color.BLACK);
         });
+
+        Text home = new Text("Home"); // this is to add a text to your navigation bar
+        home.setFont(navFont);
+        home.setFill(Color.BLACK);
+        home.setOnMouseEntered(e -> {
+            home.setFill(Color.AQUAMARINE);
+        });
+        home.setOnMouseExited(e -> {
+            home.setFill(Color.BLACK);
+        });
+
+        Text viewschedule = new Text("View Schedule"); // this is to add a text to your navigation bar
+        viewschedule.setFont(navFont);
+        viewschedule.setFill(Color.BLACK);
+        viewschedule.setOnMouseEntered(e -> {
+            viewschedule.setFill(Color.AQUAMARINE);
+        });
+        viewschedule.setOnMouseExited(e -> {
+            viewschedule.setFill(Color.BLACK);
+        });
         
+        Text writeschedule = new Text("Write Schedule"); // this is to add a text to your navigation bar
+        writeschedule.setFont(navFont);
+        writeschedule.setFill(Color.BLACK);
+        writeschedule.setOnMouseEntered(e -> {
+            writeschedule.setFill(Color.AQUAMARINE);
+        });
+        writeschedule.setOnMouseExited(e -> {
+            writeschedule.setFill(Color.BLACK);
+        });
         //the rest of the buttons view/write for one day/week/month
         
         //HBox for the navigation
-        VBox homePageNav = new VBox(30, create, view, delete, edit);
+        VBox homePageNav = new VBox(30, home, create, view, delete, edit, viewschedule, writeschedule); // add home to your VBox
         homePageNav.setPadding(new Insets(15));
         homePageNav.setAlignment(Pos.CENTER);
         
@@ -160,6 +189,7 @@ public class PSS extends Application
         mainLayout.setRight(homePageNav);
         mainLayout.setCenter(calendarImgView1);
         mainLayout.setTop(borderPane);
+        
         
         
         //Vbox for the create button's page
@@ -315,7 +345,98 @@ public class PSS extends Application
         editPage.add(new Label("New frequency: "), 0, 7);
         editPage.add(newfrequencyComboBox, 1, 7);
 
-        
+        Label temp6 = new Label("");
+        VBox viewschedulePageVbox = new VBox(temp4);
+        viewschedulePageVbox.setPadding(new Insets(15));
+        viewschedulePageVbox.setAlignment(Pos.CENTER);
+        //you can use GridPane to contain all the stuff for each page
+        GridPane viewschedulePage = new GridPane();
+        viewschedulePage.add(viewschedulePageVbox, 0, 0);
+        viewschedulePage.setHgap(15);
+        viewschedulePage.setVgap(15);
+        viewschedulePage.setPadding(new Insets(15));
+        viewschedulePage.setAlignment(Pos.TOP_LEFT);
+        DatePicker thirdstartDatePicker = new DatePicker();
+        DatePicker thirdendDatePicker = new DatePicker();
+        final ObservableList<String> length = FXCollections.observableArrayList("Day", "Week", "Month");
+        final ComboBox lengthComboBox = new ComboBox();
+        lengthComboBox.setItems(length);
+        viewschedulePage.add(new Label("Select length of wanted schedule:"), 0, 0);
+        viewschedulePage.add(lengthComboBox, 1, 0);
+        lengthComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener()
+       {
+           public void changed(ObservableValue ov2, Object t2, Object t3)
+           {
+               switch (t3.toString()){
+                   case "Day":
+                        viewschedulePage.add(new Label("Select the date:"), 0, 3);
+                        viewschedulePage.add(thirdstartDatePicker, 1, 3);
+                        break;
+                    case "Week":
+                        viewschedulePage.add(new Label("Select the start date:"), 0, 3);
+                        viewschedulePage.add(thirdstartDatePicker, 1, 3);
+                        viewschedulePage.add(new Label("Select the end date:"), 0, 4);
+                        viewschedulePage.add(thirdendDatePicker, 1, 4);
+                        break;
+                    case "Month":
+                        viewschedulePage.add(new Label("Select the start date:"), 0, 3);
+                        viewschedulePage.add(thirdstartDatePicker, 1, 3);
+                        viewschedulePage.add(new Label("Select the end date:"), 0, 4);
+                        viewschedulePage.add(thirdendDatePicker, 1, 4);
+                        break;
+               }
+            }
+        });
+
+
+        Label temp5 = new Label("");
+        VBox writeschedulePageVBox = new VBox(temp5);
+        writeschedulePageVBox.setPadding(new Insets(15));
+        writeschedulePageVBox.setAlignment(Pos.CENTER);
+        //you can use GridPane to contain all the stuff for each page
+        GridPane writeschedulePage = new GridPane();
+        writeschedulePage.add(writeschedulePageVBox, 0, 0);
+        writeschedulePage.setHgap(15);
+        writeschedulePage.setVgap(15);
+        writeschedulePage.setPadding(new Insets(15));
+        writeschedulePage.setAlignment(Pos.TOP_LEFT);
+        DatePicker laststartDatePicker = new DatePicker();
+        DatePicker lastendDatePicker = new DatePicker();
+        final TextField namefile = new TextField();
+        final ObservableList<String> lastlength = FXCollections.observableArrayList("Day", "Week", "Month");
+        final ComboBox lastlengthComboBox = new ComboBox();
+        lastlengthComboBox.setItems(lastlength);
+        writeschedulePage.add(new Label("Select length of wanted schedule:"), 0, 0);
+        writeschedulePage.add(lastlengthComboBox, 1, 0);
+        lastlengthComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener()
+       {
+           public void changed(ObservableValue ov3, Object t4, Object t5)
+           {
+               switch (t5.toString()){
+                   case "Day":
+                        writeschedulePage.add(new Label("Select the date:"), 0, 3);
+                        writeschedulePage.add(thirdstartDatePicker, 1, 3);
+                        break;
+                    case "Week":
+                        writeschedulePage.add(new Label("Select the start date:"), 0, 3);
+                        writeschedulePage.add(thirdstartDatePicker, 1, 3);
+                        writeschedulePage.add(new Label("Select the end date:"), 0, 4);
+                        writeschedulePage.add(thirdendDatePicker, 1, 4);
+                        break;
+                    case "Month":
+                        writeschedulePage.add(new Label("Select the start date:"), 0, 3);
+                        writeschedulePage.add(thirdstartDatePicker, 1, 3);
+                        writeschedulePage.add(new Label("Select the end date:"), 0, 4);
+                        writeschedulePage.add(thirdendDatePicker, 1, 4);
+                        break;
+               }
+            }
+        });
+        writeschedulePage.add(new Label("Enter file name: "), 0, 1);
+        writeschedulePage.add(namefile, 1, 1);
+
+
+
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //if any of the text on the 1st page is clicked add the specific layout container to the scene
         create.setOnMouseClicked(e -> 
@@ -342,6 +463,28 @@ public class PSS extends Application
             Scene newScene = new Scene(mainLayout, 1500, 950);
             PSS.getStage().setScene(newScene);
         });
+
+        home.setOnMouseClicked(e -> 
+        { 
+            mainLayout.setCenter(calendarImgView1);
+            Scene newScene = new Scene(mainLayout, 1500, 950); // this goes with all the other .setOnMouseClicked actions towards the end of the code
+            PSS.getStage().setScene(newScene);
+        });
+
+        viewschedule.setOnMouseClicked(e -> 
+        { 
+            mainLayout.setCenter(viewschedulePage);
+            Scene newScene = new Scene(mainLayout, 1500, 950); 
+            PSS.getStage().setScene(newScene);
+        });
+
+        writeschedule.setOnMouseClicked(e -> 
+        { 
+            mainLayout.setCenter(writeschedulePage);
+            Scene newScene = new Scene(mainLayout, 1500, 950); 
+            PSS.getStage().setScene(newScene);
+        });
+     
      
         Scene scene = new Scene(mainLayout, 1500, 950, Color.BLACK);
         primaryStage.setTitle("PSS");
