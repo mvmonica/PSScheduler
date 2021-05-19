@@ -9,7 +9,7 @@ import org.json.simple.JSONObject;
 public class Model {
     private ArrayList<Task> testList = new ArrayList<>();
     private ArrayList<Task> testListDummy = new ArrayList<>();
-    private ArrayList<Task> testListDummySchedule = new ArrayList<>();
+    private ArrayList<Task> testListAntiStorage = new ArrayList<>();
     private List<String> monthsWith30 = List.of("04", "06", "09", "11");
     private List<String> monthsWith31 = List.of("01", "03", "05", "07", "08", "10", "12");
 
@@ -19,28 +19,8 @@ public class Model {
 
     
     public void createTask(String name, String type, float startTime, float duration) throws FileNotFoundException {
-/*      testList.add(new Task(name, type, startTime, duration));
-
-        JSONObject jo = new JSONObject();
-
-        // putting data to JSONObject
-        jo.put("Name of task", name);
-        jo.put("Type of task", type);
-        jo.put("Start time", startTime);
-        jo.put("Duration", duration);
-
-        //Making a new file with the given name. ".json" will ensure that it is json file.
-        //This file will be in the main directory
-        PrintWriter pw = new PrintWriter(new File("./JSON_Files", name + ".json"));
-        pw.write(jo.toJSONString());
-
-        pw.flush();
-        pw.close();
-        System.out.println(jo.toString());*/
-
-
     }
-
+    
 
     /**
      * Will create a transient task.
@@ -58,13 +38,12 @@ public class Model {
             if(testList.isEmpty()) {
                 testList.add(task);
                 testListDummy.add(task);
-                //task.setDate(date);
             }
             else{
-                if(task.checkTaskName(name, testList) && checkTransientOverlap(task)) {
+                if(task.checkTaskName(name, testList) && checkOccurrenceOverlap(task)) { 
+                    System.out.println(name + " created");
                     testList.add(task);
                     testListDummy.add(task);
-                    //task.setDate(date);
                 }
                 else
                     System.out.println("Conflicting tasks, not added to schedule.\n");
@@ -137,8 +116,10 @@ public class Model {
             i = Integer.valueOf(newDate);
             Task task1 = new Task(name, type, startTime, duration);
             task1.setDate(Integer.valueOf(newDate));
-            if(checkOccurrenceOverlap(task1))
+            if(checkOccurrenceOverlap(task1)){
                 testList.add(task1);
+                System.out.println(name + " created on: " + i);
+            }
             else
                 System.out.println("Conflicting tasks, cannot add to schedule.");
         }
@@ -182,51 +163,17 @@ public class Model {
             task1.setDate(Integer.valueOf(newDate));
             if(checkOccurrenceOverlap(task1)){
                 testList.add(task1);
-                System.out.println("day: " + i);
+                System.out.println(name + " created on: " + i);
             }
             else
                 System.out.println("Conflicting tasks, cannot add to schedule.");
         }
     }
 
-    /*
-    public void addRecurringMonthly(String name, String category, float startTime, float duration, int startDate, int endDate){
-        for (int i = startDate; i < endDate; i += 30) {
-            String month = String.valueOf(i).substring(4, 6);
-            String day = String.valueOf(i).substring(6, 8);
-            String year = String.valueOf(i).substring(0, 4);
-            int maxDay = calculateMaxDays(month, year);
-            if (month.equals("01") && maxDay < 30) {
-                month = "02";
-                day = String.valueOf(maxDay);
-            } else {
-                if (Integer.valueOf(day) > maxDay) {
-                    day = String.valueOf(i - maxDay);
-                    day = day.length() < 2 ? "0" + day : day;
-                    if (month.equals("12")) {
-                        month = "01";
-                        year = String.valueOf(Integer.valueOf(year) + 1);
-                    } else {
-                        month = String.valueOf(Integer.valueOf(month) + 1);
-                    }
-                } else {
-                    day = String.valueOf(Integer.valueOf(day));
-                }
-                String newDate = year + month + day;
-                Task task1 = new Task(name, category, startTime, duration);
-                task1.setDate(Integer.valueOf(newDate));
-                if (checkOccurrenceOverlap(task1))
-                    testList.add(task1);
-                else
-                    System.out.println("Conflicting tasks, cannot add to schedule.");
-            }
-        }
-    }
-*/
-
     /**
      * Calculates the last day of the given month
      * @param month
+     * @param year
      * @return
      */
     public int calculateMaxDays(String month, String year){
@@ -241,54 +188,48 @@ public class Model {
             return 28;
     }
 
-
+    /**
+     * Handles adding anti tasks, this will calculate all the dates and ensures the
+     * bounds are handled. It will also store cancelled tasks in a seperate array.
+     * @param name
+     * @param category
+     * @param startTime
+     * @param duration
+     * @param startDate
+     */
     public void createAntiTask(String name, String type, float startTime, float duration, int date){
-        AntiTask task = new AntiTask(name, type, startTime, duration, date);
-
-    }
-
-    public boolean checkAntiTaskOverlaps(AntiTask checkingTask){
-        for (int i =0; i < testList.size(); i++) {
-            AntiTask inList = (AntiTask) testList.get(i);
-            if (inList.getDate() == checkingTask.getDate()){
-
-                float inListEndTime = inList.getStartTime() + inList.getDuration();
-                float inListStart = inList.getStartTime();
-
-                float taskStart = checkingTask.getStartTime();
-                float taskEndTime = checkingTask.getStartTime() + checkingTask.getDuration();
-
-
-                if (inListStart <= taskStart && taskStart < inListEndTime)
-                    return  false;
+        Task task = new AntiTask(name, type, startTime, duration, date);
+        if((task.checkCategory()).equals("Anti")){
+            if(task.checkTaskName(name, testListDummy) && !checkAntiTaskOverlaps(task)) {
+                for (int i = 0; i < testList.size(); i++){
+                    if(testList.get(i).getDate() == date && testList.get(i).getStartTime() == startTime && testList.get(i).getDuration() == duration){
+                        System.out.println("One instance of " + testList.get(i).getName() + " cancelled");
+                        testListAntiStorage.add(testList.get(i));
+                        testList.remove(i);
+                        testListDummy.add(task);
+                    }
+                }        
             }
+            else{
+                System.out.println("No tasks or task already cancelled\n");
+            }
+        } else {
+            System.out.println("Invalid Category.\n");
         }
-        return true;
+
     }
+
 
     /**
-     * Checks an overlap for a given transient task
-     * @param checkingTask
-     * @return
+     * Checks the overlap of an recurringtask and the planned antiTask
+     * @return boolean that denotes if there is an overlap
      */
-    public boolean checkTransientOverlap(TransientTask checkingTask){
-        for (int i =0; i < testList.size(); i++) {
-            Task inTask = testList.get(i);
-            if(inTask.checkTaskType(inTask.getType()) == "Transient") {
-                inTask = (TransientTask) inTask;
-                if (((TransientTask) inTask).getDate() == checkingTask.getDate()) {
-
-                    float inListEndTime = inTask.getStartTime() + inTask.getDuration();
-                    float inListStart = inTask.getStartTime();
-
-                    float taskStart = checkingTask.getStartTime();
-                    float taskEndTime = checkingTask.getStartTime() + checkingTask.getDuration();
-
-
-                    if (inListStart <= taskStart && taskStart < inListEndTime)
-                        return false;
-                    else if(inListStart <= taskEndTime && taskEndTime < inListEndTime)
-                        return false;
+    public boolean checkAntiTaskOverlaps(Task checkingTask){
+        for (int i = 0; i < testList.size(); i++) {
+            Task inList = (Task) testList.get(i);
+            if (inList.getDate() == checkingTask.getDate()){
+                if (inList.getStartTime() == checkingTask.getStartTime() && inList.getDuration() == checkingTask.getDuration()){
+                    return false;
                 }
             }
         }
@@ -296,93 +237,82 @@ public class Model {
     }
 
     /**
-     * Checks the overlap of an occurrence from a recurring task
+     * Checks the overlap of an occurrence from a task
      * @return boolean that denotes if there is an overlap
      */
     public boolean checkOccurrenceOverlap(Task task){
-        for (int i =0; i < testList.size(); i++) {
+        for (int i = 0; i < testList.size(); i++) {
             Task inTask = testList.get(i);
-                if (inTask.getDate() == task.getDate()) {
-                    float inListEndTime = inTask.getStartTime() + inTask.getDuration();
-                    float inListStart = inTask.getStartTime();
+            if (inTask.getDate() == task.getDate()) {
+                float inListEndTime = inTask.getStartTime() + inTask.getDuration();
+                float inListStart = inTask.getStartTime();
 
-                    float taskStart = task.getStartTime();
-                    float taskEndTime = task.getStartTime() + task.getDuration();
+                float taskStart = task.getStartTime();
+                float taskEndTime = task.getStartTime() + task.getDuration();
 
-                    if (inListStart <= taskStart && taskStart < inListEndTime)
-                        return false;
-                    else if(inListStart <= taskEndTime && taskEndTime < inListEndTime)
-                        return false;
+                if (inListStart <= taskStart && taskStart < inListEndTime)
+                    return false;
+                else if(inListStart <= taskEndTime && taskEndTime < inListEndTime)
+                    return false;
+                else if(inListStart >= taskStart && inListEndTime <= taskEndTime){
+                    return false;
                 }
+            }
         }
         return true;
     }
 
-
-    public void viewTask(String name){
-        for (int i = 0; i < testList.size(); i++){
-            Task temp = (Task)testList.get(i);
-            if (temp.getName().equals(name)){
-                //displays a task, but should be replaced later
-                System.out.println("Name: " + temp.getName());
-                System.out.println("Type: " + temp.getType());
-                System.out.println("Start Time: " + temp.getStartTime());
-                System.out.println("Duration: " + temp.getDuration());
-                break;
-            }
-        }
-    }
-
-    public void deleteTask(String name, int date){
+    /**
+     * Looks for a task with the given name and deletes it if within the restrictions
+     * @param name
+     */
+    public void deleteTask(String name){
+        //Old deleteTask code
+        /*
         for (int i = 0; i < testList.size(); i++){
             Task temp = testList.get(i);
             if (temp.getName().equals(name) && temp.getDate() == date){
                 testList.remove(i);
             }
-        }
+        }*/
+
         for (int i = 0; i < testListDummy.size(); i++){
             Task temp = testListDummy.get(i);
             if (temp.getName().equals(name)){
-                testListDummy.remove(i);
+                if((temp.checkCategory()).equals("Transient")){
+                    for (int j = 0; j < testList.size(); j++){
+                        Task tempT = testList.get(j);
+                        if (tempT.getName().equals(name)){
+                            testList.remove(j);
+                        }
+                    }
+                    testListDummy.remove(i);
+                    System.out.println("TaskRemoved");
+                }
+                else if((temp.checkCategory()).equals("Recurring")){
+                    for (int k = 0; k < testList.size(); k++){
+                        Task tempT = testList.get(k);
+                        if (tempT.getName().equals(name)){
+                            testList.remove(k);
+                        }
+                    }
+                    testListDummy.remove(i);
+                    System.out.println("TaskRemoved");
+                }
+                else if(temp.checkCategory().equals("Anti")){
+                    if(checkOccurrenceOverlap(temp)){
+                        for (int m = 0; m < testListAntiStorage.size(); m++){
+                            Task tempT = testListAntiStorage.get(m);
+                            if (tempT.getDate() == temp.getDate() && tempT.getStartTime() == temp.getStartTime()){
+                                testList.add(tempT);
+                                testListDummy.remove(i);
+                                System.out.println("TaskRemoved");
+                            }
+                        }                       
+                    }
+                }              
             }
         }
-    }
-
-    public void editTask(String name) throws FileNotFoundException {
-        Scanner input = new Scanner(System.in);
-        ArrayList <Object> testList1 = new ArrayList<Object>();
-
-        //Searching for the items and counting how many similar items are available.
-        //if there are more than one this is likely a recurring task.
-        //save those into
-        int count = 0;
-        for (Object o : testList) {
-            JSONObject jo = (JSONObject) o;
-            if(jo.containsValue(name)){
-                count++;
-                testList1.add(jo);
-            }
-        }
-
-        //if no items found exit
-        if(count == 0){
-            System.out.println("no items to change");
-            System.exit(0);
-        }
-
-        //tell the user how many items found.
-        System.out.printf("found %d item/s", count);
-
-
-        for (Object o : testList1) {
-            JSONObject jo = (JSONObject) o;
-            System.out.println("do you want to change this item? (y/n)" );
-            System.out.println(jo.toString());
-            if(input.nextLine().equals("y")){
-                takeInfo();
-            }
-        }
-        System.out.println("no items to change!");
     }
 
     public void editTask(int date, String name){
@@ -513,7 +443,7 @@ public class Model {
         
         //Get Task name
         String Name = (String) Task.get("Name");
-        System.out.println(Name);
+        //System.out.println(Name);
 
         //Start time
         String startTimeType = Task.get("StartTime").getClass().toString();
@@ -522,27 +452,26 @@ public class Model {
         if(startTimeType.equals("class java.lang.Double")){
             double StartTime1 = (double) Task.get("StartTime");
             StartTime = (float) StartTime1;
-            System.out.println(StartTime);
+            //System.out.println(StartTime);
         }
         else if(startTimeType.equals("class java.lang.Long")){
             long StartTime1 = (long) Task.get("StartTime");
             StartTime = (float) StartTime1;
-            System.out.println(StartTime);
+            //System.out.println(StartTime);
         }
 
         //Get duration
         String durationType = Task.get("Duration").getClass().toString();
-        //System.out.println(durationType);
         float Duration = 0f;
         if(durationType.equals("class java.lang.Double")){
             double Duration1 = (double) Task.get("Duration");
             Duration = (float) Duration1;
-            System.out.println(Duration);
+            //System.out.println(Duration);
         }
-        else{ //if(durationType.equals("class java.lang.Long")){
+        else{ 
             long Duration1 = (long) Task.get("Duration");
             Duration = (float) Duration1;
-            System.out.println(Duration);
+            //System.out.println(Duration);
         }
 
         /**
@@ -552,24 +481,24 @@ public class Model {
 
         String Type = (String) Task.get("Type");
         String tempType = checkCategory(Type);
-        System.out.println(Type);
-        System.out.println(tempType);
+        //System.out.println(Type);
+        //System.out.println(tempType);
 
         if (tempType.equalsIgnoreCase("recurring")){
             //frequency
             long Frequency1 = (long) Task.get("Frequency");
             int Frequency = (int) Frequency1;
-            System.out.println(Frequency);
+            //System.out.println(Frequency);
 
             //Start date
             long StartDate1 = (long) Task.get("StartDate");
             int StartDate = (int) StartDate1;
-            System.out.println(StartDate);
+            //System.out.println(StartDate);
 
             //Get end date
             long EndDate1 = (long) Task.get("EndDate");
             int EndDate = (int) EndDate1;
-            System.out.println(EndDate);
+            //System.out.println(EndDate);
 
             //Creating a recurring task
             createTask(Name, Type, StartTime, Duration, StartDate, EndDate, Frequency );
@@ -577,7 +506,7 @@ public class Model {
         else if(tempType.equalsIgnoreCase("transient")){
             long Date1 = (long) Task.get("Date");
             int Date = (int) Date1;
-            System.out.println(Date);
+            //System.out.println(Date);
 
             //Creating a transient task
             createTask(Name, Type, StartTime, Duration, Date);
@@ -585,9 +514,9 @@ public class Model {
         else if(tempType.equalsIgnoreCase("anti")){
             long Date1 = (long) Task.get("Date");
             int Date = (int) Date1;
-            System.out.println(Date);
+            //System.out.println(Date);
 
-            //Creating a anti task
+            createAntiTask(Name, Type, StartTime, Duration, Date);
 
             //since this line has the same inputs as transient task we need a new handler in create task
             //createTask(Name, Type, StartTime, Duration, Date);
