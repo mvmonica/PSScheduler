@@ -35,7 +35,7 @@ public class RecurringTask extends Task{
         obj.put("Type" , getType());
         obj.put("StartTime" , getStartTime());
         obj.put("Duration" , getDuration());
-        obj.put("Date" , getDate()));
+        obj.put("Date" , getDate());
 
         obj.put("StartDate" , startDate);
         obj.put("EndDate" , endDate);
