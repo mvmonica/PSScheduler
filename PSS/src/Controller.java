@@ -41,13 +41,13 @@ public class Controller {
                 taskType = scan.nextInt();
                 scan.nextLine();
             } else if(selected == 2) {
-                System.out.print("\nEnter a date: ");
-                int date = scan.nextInt();
+                //System.out.print("\nEnter a date: ");
+                //int date = scan.nextInt();
                 System.out.print("Enter a name: ");
                 scan.nextLine();
                 String name = scan.nextLine();
 
-                testModel.deleteTask(name, date);
+                testModel.deleteTask(name);
             } else if(selected == 3){
                 System.out.print("\nEnter a date: ");
                 int date = scan.nextInt();
